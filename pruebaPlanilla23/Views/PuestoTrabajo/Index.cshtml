@@ -1,0 +1,68 @@
+﻿@model IEnumerable<pruebaPlanilla23.Models.PuestoTrabajo>
+
+@{
+    ViewData["Title"] = "Puestos de Trabajo";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">Lista de Puestos de Trabajo</h2>
+        <a asp-action="Create" class="btn btn-success shadow">
+            Agregar Nuevo Puesto
+        </a>
+    </div>
+
+    <div class="card shadow mt-3">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped text-center align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.NombrePuesto)</th>
+                            <th>@Html.DisplayNameFor(model => model.SalarioBase)</th>
+                            <th>@Html.DisplayNameFor(model => model.ValorxHora)</th>
+                            <th>@Html.DisplayNameFor(model => model.ValorExtra)</th>
+                            <th>@Html.DisplayNameFor(model => model.Estado)</th>
+                            <th>@Html.DisplayNameFor(model => model.FechaCreacion)</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.NombrePuesto)</td>
+                                <td>$@Html.DisplayFor(modelItem => item.SalarioBase)</td>
+                                <td>$@Html.DisplayFor(modelItem => item.ValorxHora)</td>
+                                <td>$@Html.DisplayFor(modelItem => item.ValorExtra)</td>
+                                <td>
+                                    <span class="badge @(item.Estado == 1 ? "bg-success" : "bg-danger")">
+                                        @ViewBag.Estados[item.Estado]
+                                    </span>
+                                </td>
+                                <td>@item.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                            Editar
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                            Ver
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            Eliminar
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3 shadow">
+        Volver al inicio
+    </a>
+</div>
