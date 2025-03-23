@@ -47,5 +47,107 @@ namespace pruebaPlanilla23.Controllers
         }
 
 
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tipoDeHorario = await _context.TipodeHorarios
+                .Include(t => t.Horarios)
+                .FirstOrDefaultAsync(t => t.Id == id);
+
+            if (tipoDeHorario == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.TipoDeHorarioId = new SelectList(_context.TipodeHorarios, "Id", "NombreHorario", tipoDeHorario.Id);
+            return View(tipoDeHorario);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, TipodeHorario tipodeHorario)
+        {
+            if (id != tipodeHorario.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var tipoDeHorarioActual = await _context.TipodeHorarios
+                        .Include(t => t.Horarios)
+                        .FirstOrDefaultAsync(t => t.Id == id);
+
+                    if (tipoDeHorarioActual == null)
+                    {
+                        return NotFound();
+                    }
+
+                    tipoDeHorarioActual.NombreHorario = tipodeHorario.NombreHorario;
+
+
+                    foreach (var horario in tipodeHorario.Horarios)
+                    {
+
+                        if (horario.Id > 0)
+                        {
+                            var horarioExistente = tipoDeHorarioActual.Horarios.FirstOrDefault(h => h.Id == horario.Id);
+                            if (horarioExistente != null)
+                            {
+                                horarioExistente.Dias = horario.Dias;
+                                horarioExistente.HorasxDia = horario.HorasxDia;
+                                horarioExistente.HorasEntrada = horario.HorasEntrada;
+                                horarioExistente.HorasSalida = horario.HorasSalida;
+                            }
+                        }
+                        else
+                        {
+
+                            tipoDeHorarioActual.Horarios.Add(horario);
+                        }
+                    }
+
+                    var horariosAEliminar = tipoDeHorarioActual.Horarios
+                        .Where(h => !tipodeHorario.Horarios.Any(nh => nh.Id == h.Id))
+                        .ToList();
+
+                    foreach (var horario in horariosAEliminar)
+                    {
+                        _context.Horarios.Remove(horario);
+                    }
+
+
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TipoDeHorarioExists(tipodeHorario.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+
+            ViewBag.TipoDeHorarioId = new SelectList(_context.TipodeHorarios, "Id", "NombreHorario", tipodeHorario.Id);
+            return View(tipodeHorario);
+        }
+
+        private bool TipoDeHorarioExists(int id)
+        {
+            return _context.TipodeHorarios.Any(e => e.Id == id);
+        }
+
     }
 }
