@@ -19,10 +19,36 @@ namespace pruebaPlanilla23.Controllers
         }
 
         // GET: Empleado
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Empleado empleado, int topRegistro = 10)
         {
-            var planillaPrDbContext = _context.Empleados.Include(e => e.JefeInmediato).Include(e => e.PuestoTrabajo).Include(e => e.TipoDeHorario);
-            return View(await planillaPrDbContext.ToListAsync());
+            var query = _context.Empleados.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(empleado.Nombre))
+                query = query.Where(s => s.Nombre.Contains(empleado.Nombre));
+            if (!string.IsNullOrWhiteSpace(empleado.Apellido))
+                query = query.Where(s => s.Apellido.Contains(empleado.Apellido));
+            if (!string.IsNullOrWhiteSpace(empleado.Dui))
+                query = query.Where(s => s.Dui.Contains(empleado.Dui));
+            if (empleado.Estado >= 0) // Suponiendo que Estado no es negativo
+                query = query.Where(s => s.Estado.ToString().Contains(empleado.Estado.ToString()));
+            if (empleado.SalarioBase > 0)
+                query = query.Where(s => s.SalarioBase.ToString().Contains(empleado.SalarioBase.ToString()));
+            if (empleado.PuestoTrabajoId > 0)
+                query = query.Where(s => s.PuestoTrabajoId == empleado.PuestoTrabajoId);
+            if (empleado.TipoDeHorarioId > 0)
+                query = query.Where(s => s.TipoDeHorarioId == empleado.TipoDeHorarioId);
+            if (topRegistro > 0)
+                query = query.Take(topRegistro);
+            query = query
+                .Include(p => p.TipoDeHorario).Include(p => p.PuestoTrabajo);
+
+            var puestotrabajos = _context.PuestoTrabajos.ToList();
+            puestotrabajos.Add(new PuestoTrabajo { NombrePuesto = "SELECCIONAR", Id = 0 });
+            var tipodehorario = _context.TipodeHorarios.ToList();
+            tipodehorario.Add(new TipodeHorario { NombreHorario = "SELECCIONAR", Id = 0 });
+            ViewData["TipoDeHorarioId"] = new SelectList(tipodehorario, "Id", "NombreHorario", 0);
+            ViewData["PuestoTrabajoId"] = new SelectList(puestotrabajos, "Id", "NombrePuesto", 0);
+
+            return View(await query.ToListAsync());
         }
 
         // GET: Empleado/Details/5
