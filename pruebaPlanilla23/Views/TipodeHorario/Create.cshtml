@@ -1,0 +1,37 @@
+﻿@model pruebaPlanilla23.Models.TipodeHorario
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card">
+
+	<div class="card-header">
+		<h1 class="text-center">Crear nueva tipo de horario</h1>
+	</div>
+	<form asp-action="Create">
+		<div class="card-body">
+
+			<div class="row">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="col-6">
+					<div class="form-group">
+						<label asp-for="NombreHorario" class="control-label"></label>
+						<input asp-for="NombreHorario" class="form-control" />
+						<span asp-validation-for="NombreHorario" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card-footer">
+			<button type="submit" value="Create" class="btn btn-outline-success">Crear</button>
+			<a asp-action="Index" class="btn btn-outline-secondary">Regresar</a>
+		</div>
+	</form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

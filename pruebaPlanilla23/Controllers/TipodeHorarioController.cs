@@ -18,15 +18,34 @@ namespace pruebaPlanilla23.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(TipodeHorario tipoDeHorario)
+        public async Task<IActionResult> Index(TipodeHorario tipodeHorario)
         {
             var query = _context.TipodeHorarios.AsQueryable();
-            if (!string.IsNullOrWhiteSpace(tipoDeHorario.NombreHorario))
-                query = query.Where(t => t.NombreHorario.Contains(tipoDeHorario.NombreHorario));
+            if (!string.IsNullOrWhiteSpace(tipodeHorario.NombreHorario))
+                query = query.Where(t => t.NombreHorario.Contains(tipodeHorario.NombreHorario));
 
             return View(await query.ToListAsync());
         }
-        
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,NombreHorario")] TipodeHorario tipodeHorario)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(tipodeHorario);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(tipodeHorario);
+        }
+
 
     }
 }
