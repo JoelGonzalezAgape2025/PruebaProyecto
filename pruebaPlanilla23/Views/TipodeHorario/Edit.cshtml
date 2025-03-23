@@ -1,0 +1,170 @@
+﻿@model pruebaPlanilla23.Models.TipodeHorario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<form asp-action="Edit" method="post" onsubmit="return validarDiasRepetidos()">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="NombreHorario" class="control-label"></label>
+        <input asp-for="NombreHorario" class="form-control" />
+        <span asp-validation-for="NombreHorario" class="text-danger"></span>
+    </div>
+
+    <h4>Horarios Asignados</h4>
+    <div id="horarios-container">
+        @{
+            int i = 0;
+        }
+        @foreach (var horario in Model.Horarios)
+        {
+            <div class="horario-item">
+                <hr>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Día</label>
+                            <input name="Horarios[@i].Dias" value="@horario.Dias" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Horas por Día</label>
+                            <input name="Horarios[@i].HorasxDia" value="@horario.HorasxDia" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Hora Entrada</label>
+                            <input name="Horarios[@i].HorasEntrada" value="@horario.HorasEntrada.ToString("HH:mm")" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Hora Salida</label>
+                            <input name="Horarios[@i].HorasSalida" value="@horario.HorasSalida.ToString("HH:mm")" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="button" class="remove-horario btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+            i++;
+        }
+    </div>
+
+    <button type="button" id="add-horario" class="btn btn-success mt-2">Agregar Más</button>
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let index = @Model.Horarios.Count;
+            const maxInputs = 7;
+            const container = document.getElementById("horarios-container");
+            const addButton = document.getElementById("add-horario");
+
+            // Agregar nuevo horario
+            addButton.addEventListener("click", function () {
+                if (index >= maxInputs) {
+                    alert("No puedes agregar más de 7 horarios.");
+                    return;
+                }
+
+                let newHorario = document.createElement("div");
+                newHorario.classList.add("horario-item");
+                newHorario.innerHTML = `
+                    <br />
+                    <div class="row">
+                        <hr>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Día</label>
+                                <input name="Horarios[${index}].Dias" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Horas por Día</label>
+                                <input type="number" name="Horarios[${index}].HorasxDia" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Hora Entrada</label>
+                                <input type="time" name="Horarios[${index}].HorasEntrada" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Hora Salida</label>
+                                <input type="time" name="Horarios[${index}].HorasSalida" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="button" class="remove-horario btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(newHorario);
+                index++;
+
+                // Deshabilitar botón si se alcanza el máximo
+                addButton.disabled = (index >= maxInputs);
+            });
+
+            // Eliminar horario
+            container.addEventListener("click", function (e) {
+                if (e.target.classList.contains("remove-horario")) {
+                    e.target.closest(".horario-item").remove();
+                    index--;
+                    addButton.disabled = false;
+                }
+            });
+        });
+
+        // Validar días repetidos
+        function validarDiasRepetidos() {
+            let mensajeError = document.getElementById("mensaje-error");
+            let inputs = document.querySelectorAll('input[name$="Dias"]');
+            let dias = new Set();
+
+            mensajeError.style.display = "none";
+            mensajeError.textContent = "";
+
+            for (let input of inputs) {
+                let dia = input.value.trim();
+
+                if (!dia) {
+                    mostrarError("Por favor, ingresa un día en todos los campos.");
+                    return false;
+                }
+
+                if (dias.has(dia)) {
+                    mostrarError(`El día "${dia}" está repetido. Por favor, corrige los datos.`);
+                    return false;
+                }
+
+                dias.add(dia);
+            }
+
+            return true;
+        }
+
+        // Mostrar error
+        function mostrarError(mensaje) {
+            let mensajeError = document.getElementById("mensaje-error");
+            mensajeError.textContent = mensaje;
+            mensajeError.style.display = "block";
+        }
+
+    </script>
+}
+
+
