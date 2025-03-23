@@ -19,9 +19,21 @@ namespace pruebaPlanilla23.Controllers
         }
 
         // GET: PuestoTrabajo
+        // GET: PuestoTrabajo
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PuestoTrabajos.ToListAsync());
+
+            var estados = new Dictionary<byte, string>
+            {
+                {1, "Activo " },
+                {0, "Inactivo" },
+            };
+
+            ViewBag.Estados = estados;
+
+            var puestos = await _context.PuestoTrabajos.ToListAsync();
+
+            return View(puestos);
         }
 
         // GET: PuestoTrabajo/Details/5
@@ -45,6 +57,13 @@ namespace pruebaPlanilla23.Controllers
         // GET: PuestoTrabajo/Create
         public IActionResult Create()
         {
+            var estados = new List<SelectListItem>
+            {
+                new  SelectListItem{ Value="1",Text="Activo" },
+                new  SelectListItem{ Value="0",Text="Inactivo" }
+            };
+
+            ViewBag.Estados = estados;
             return View();
         }
 
@@ -57,6 +76,7 @@ namespace pruebaPlanilla23.Controllers
         {
             if (ModelState.IsValid)
             {
+                puestoTrabajo.FechaCreacion = DateTime.Now;
                 _context.Add(puestoTrabajo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -67,6 +87,13 @@ namespace pruebaPlanilla23.Controllers
         // GET: PuestoTrabajo/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var estados = new List<SelectListItem>
+            {
+                new  SelectListItem{ Value="1",Text="Activo" },
+                new  SelectListItem{ Value="0",Text="Inactivo" }
+            };
+
+            ViewBag.Estados = estados;
             if (id == null)
             {
                 return NotFound();
