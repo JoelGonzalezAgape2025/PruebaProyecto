@@ -75,6 +75,14 @@ namespace pruebaPlanilla23.Controllers
         // GET: Empleado/Create
         public IActionResult Create()
         {
+            var estados = new List<SelectListItem>
+            {
+                new  SelectListItem{ Value="1",Text="Activo" },
+                new  SelectListItem{ Value="0",Text="Inactivo" }
+            };
+
+            ViewBag.Estados = estados;
+
             ViewData["JefeInmediatoId"] = new SelectList(_context.Empleados, "Id", "Id");
             ViewData["PuestoTrabajoId"] = new SelectList(_context.PuestoTrabajos, "Id", "NombrePuesto");
             ViewData["TipoDeHorarioId"] = new SelectList(_context.TipodeHorarios, "Id", "Id");
