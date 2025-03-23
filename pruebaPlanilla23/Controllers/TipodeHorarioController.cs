@@ -18,6 +18,14 @@ namespace pruebaPlanilla23.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> Index(TipodeHorario tipoDeHorario)
+        {
+            var query = _context.TipodeHorarios.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(tipoDeHorario.NombreHorario))
+                query = query.Where(t => t.NombreHorario.Contains(tipoDeHorario.NombreHorario));
+
+            return View(await query.ToListAsync());
+        }
         
 
     }
