@@ -62,6 +62,7 @@ namespace pruebaPlanilla23.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,JefeInmediatoId,TipoDeHorarioId,Dui,Nombre,Apellido,Telefono,Correo,Estado,SalarioBase,FechaContraInicial,FechaContraFinal,Usuario,Contraseña,PuestoTrabajoId")] Empleado empleado)
         {
+          
             // Validar duplicados
             if (await _context.Empleados.AnyAsync(e => e.Dui == empleado.Dui))
             {
@@ -77,22 +78,27 @@ namespace pruebaPlanilla23.Controllers
             var rolesPermitidos = new[] { "Gerente de Recursos Humanos", "Supervisor", "Administrador de Nómina" };
             var puestoTrabajo = await _context.PuestoTrabajos.FindAsync(empleado.PuestoTrabajoId);
 
-
-            //VALIDAR JEF INMEDIATO
-            // Verificar si el puesto no permite asignar un jefe inmediato
+            // Validar Jefe Inmediato
             var rolesSinJefeInmediato = new[] { "Gerente de Recursos Humanos", "Supervisor", "Administrador de Nómina" };
             if (puestoTrabajo != null && rolesSinJefeInmediato.Contains(puestoTrabajo.NombrePuesto))
             {
-                ModelState.AddModelError("JefeInmediatoId", "El campo Jefe Inmediato no se puede asignar para este puesto.");
-                empleado.JefeInmediatoId = null; // Asegurar que no tenga valor.
+                if (empleado.JefeInmediatoId != null)
+                {
+                    // Solo agrega error si se intenta asignar un jefe inmediato, ya que no está permitido
+                    ModelState.AddModelError("JefeInmediatoId", "El campo Jefe Inmediato no se puede asignar para este puesto.");
+                    empleado.JefeInmediatoId = null; // Asegurar que no tenga valor.
+                }
             }
 
+            // Si el modelo es válido, guarda los datos
             if (ModelState.IsValid)
             {
                 _context.Add(empleado);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // Recargar datos para el formulario
             ViewData["JefeInmediatoId"] = new SelectList(_context.Empleados, "Id", "Id", empleado.JefeInmediatoId);
             ViewData["PuestoTrabajoId"] = new SelectList(_context.PuestoTrabajos, "Id", "NombrePuesto", empleado.PuestoTrabajoId);
             ViewData["TipoDeHorarioId"] = new SelectList(_context.TipodeHorarios, "Id", "Id", empleado.TipoDeHorarioId);
