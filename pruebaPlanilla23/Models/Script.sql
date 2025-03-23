@@ -210,5 +210,5 @@ CREATE TABLE EmpleadoPlanilla (
     CONSTRAINT FK_EmpleadoPlanilla_Planilla FOREIGN KEY (PlanillaId) REFERENCES Planilla(Id),
     CONSTRAINT FK_EmpleadoPlanilla_Vacacion FOREIGN KEY (VacacionId) REFERENCES Vacacion(Id)
 
-    --Prueba
+  
 );
