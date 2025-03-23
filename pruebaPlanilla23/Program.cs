@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using pruebaPlanilla23.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//Se agrego los servicios de DbContext
+builder.Services.AddDbContext<PlanillaPrDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Conn"));
+});
+
 
 var app = builder.Build();
 
