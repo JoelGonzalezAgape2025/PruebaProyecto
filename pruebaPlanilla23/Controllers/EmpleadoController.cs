@@ -158,6 +158,15 @@ namespace pruebaPlanilla23.Controllers
         // GET: Empleado/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
+            var estados = new List<SelectListItem>
+            {
+                new  SelectListItem{ Value="1",Text="Activo" },
+                new  SelectListItem{ Value="0",Text="Inactivo" }
+            };
+
+            ViewBag.Estados = estados;
+
             if (id == null)
             {
                 return NotFound();
@@ -186,9 +195,22 @@ namespace pruebaPlanilla23.Controllers
                 return NotFound();
             }
 
+
             // Validar roles permitidos
             var rolesPermitidos = new[] { "Gerente de Recursos Humanos", "Supervisor", "Administrador de Nómina" };
             var puestoTrabajo = await _context.PuestoTrabajos.FindAsync(empleado.PuestoTrabajoId);
+
+            // Validar Jefe Inmediato
+            var rolesSinJefeInmediato = new[] { "Gerente de Recursos Humanos", "Supervisor", "Administrador de Nómina" };
+            if (puestoTrabajo != null && rolesSinJefeInmediato.Contains(puestoTrabajo.NombrePuesto))
+            {
+                if (empleado.JefeInmediatoId != null)
+                {
+                    // Solo agrega error si se intenta asignar un jefe inmediato, ya que no está permitido
+                    ModelState.AddModelError("JefeInmediatoId", "El campo Jefe Inmediato no se puede asignar para este puesto.");
+                    empleado.JefeInmediatoId = null; // Asegurar que no tenga valor.
+                }
+            }
 
             if (ModelState.IsValid)
             {
