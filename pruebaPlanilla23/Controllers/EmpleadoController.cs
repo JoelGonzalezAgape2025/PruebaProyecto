@@ -45,8 +45,10 @@ namespace pruebaPlanilla23.Controllers
             puestotrabajos.Add(new PuestoTrabajo { NombrePuesto = "SELECCIONAR", Id = 0 });
             var tipodehorario = _context.TipodeHorarios.ToList();
             tipodehorario.Add(new TipodeHorario { NombreHorario = "SELECCIONAR", Id = 0 });
-            ViewData["TipoDeHorarioId"] = new SelectList(tipodehorario, "Id", "NombreHorario", 0);
+            ViewData["NombreHorario"] = new SelectList(tipodehorario, "Id", "NombreHorario", 0);
             ViewData["PuestoTrabajoId"] = new SelectList(puestotrabajos, "Id", "NombrePuesto", 0);
+
+
 
             return View(await query.ToListAsync());
         }
@@ -85,7 +87,7 @@ namespace pruebaPlanilla23.Controllers
 
             ViewData["JefeInmediatoId"] = new SelectList(_context.Empleados, "Id", "Id");
             ViewData["PuestoTrabajoId"] = new SelectList(_context.PuestoTrabajos, "Id", "NombrePuesto");
-            ViewData["TipoDeHorarioId"] = new SelectList(_context.TipodeHorarios, "Id", "Id");
+            ViewData["NombreHorario"] = new SelectList(_context.TipodeHorarios, "Id", "NombreHorario");
             return View();
         }
 
@@ -135,7 +137,7 @@ namespace pruebaPlanilla23.Controllers
             // Recargar datos para el formulario
             ViewData["JefeInmediatoId"] = new SelectList(_context.Empleados, "Id", "Id", empleado.JefeInmediatoId);
             ViewData["PuestoTrabajoId"] = new SelectList(_context.PuestoTrabajos, "Id", "NombrePuesto", empleado.PuestoTrabajoId);
-            ViewData["TipoDeHorarioId"] = new SelectList(_context.TipodeHorarios, "Id", "Id", empleado.TipoDeHorarioId);
+            ViewData["NombreHorario"] = new SelectList(_context.TipodeHorarios, "Id", "NombreHorario", empleado.TipoDeHorarioId);
             return View(empleado);
         }
 
@@ -179,7 +181,7 @@ namespace pruebaPlanilla23.Controllers
             }
             ViewData["JefeInmediatoId"] = new SelectList(_context.Empleados, "Id", "Id", empleado.JefeInmediatoId);
             ViewData["PuestoTrabajoId"] = new SelectList(_context.PuestoTrabajos, "Id", "NombrePuesto", empleado.PuestoTrabajoId);
-            ViewData["TipoDeHorarioId"] = new SelectList(_context.TipodeHorarios, "Id", "Id", empleado.TipoDeHorarioId);
+            ViewData["NombreHorario"] = new SelectList(_context.TipodeHorarios, "Id", "NombreHorario", empleado.TipoDeHorarioId);
             return View(empleado);
         }
 
@@ -234,7 +236,7 @@ namespace pruebaPlanilla23.Controllers
             }
             ViewData["JefeInmediatoId"] = new SelectList(_context.Empleados, "Id", "Id", empleado.JefeInmediatoId);
             ViewData["PuestoTrabajoId"] = new SelectList(_context.PuestoTrabajos, "Id", "NombrePuesto", empleado.PuestoTrabajoId);
-            ViewData["TipoDeHorarioId"] = new SelectList(_context.TipodeHorarios, "Id", "Id", empleado.TipoDeHorarioId);
+            ViewData["NombreHorario"] = new SelectList(_context.TipodeHorarios, "Id", "NombreHorario", empleado.TipoDeHorarioId);
             return View(empleado);
         }
 

@@ -37,8 +37,8 @@
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label">Estado</label>
-                    <input name="Estado" class="form-control"/>
-                </div>
+                     <input name="Estado" class="form-control"/>
+             </div>
             </div>
             </<div>
 
@@ -46,13 +46,13 @@
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label">Puesto de Trabajo</label>
-                    <select name="PuestoTrabajoId" class="form-control" asp-items="ViewBag.PuestoTrabajoId"></select>
+                  <select name="PuestoTrabajoId" class="form-control" asp-items="ViewBag.PuestoTrabajoId"></select>
                 </div>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label class="control-label">Tipo de horario</label>
-                    <select name="TipoDeHorarioId" class="form-control" asp-items="ViewBag.TipoDeHorarioId"></select>
+                    <select name="NombreHorario" class="form-control" asp-items="ViewBag.NombreHorario"></select>
                 </div>
             </div>
             <div class="col-4">
@@ -76,7 +76,7 @@
             <br />
             <div class="col-12">
                 <input type="submit" value="Buscar" class="btn btn-dark btn-sm" />
-                <a asp-action="Create" class="btn btn-secondary btn-sm">Crar Nuevo Empleado!!</a>
+                <a asp-action="Create" class="btn btn-secondary btn-sm">CrEar Nuevo Empleado!!</a>
             </div>
         </div>
     </div>
@@ -178,7 +178,7 @@
                 @Html.DisplayFor(modelItem => item.PuestoTrabajo.NombrePuesto)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TipoDeHorario.Id)
+                @Html.DisplayFor(modelItem => item.TipoDeHorario.NombreHorario)
             </td>
             <td>
                 <div class="btn-group" role="group">
