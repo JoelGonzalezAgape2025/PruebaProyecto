@@ -1,0 +1,112 @@
+﻿@model pruebaPlanilla23.Models.Empleado
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1 class="text-center" style="font-family:'Cambria Math'">Eliminar al Empleado</h1>
+<h4 class="text-center text-muted text-secondary" style="font-family:'Cambria Math'">Empleado</h4>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg p-4 text-center">
+
+        <dl class="row justify-content-center">
+                <dt class="col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Dui)
+                </dt>
+                <dd class="col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Dui)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Nombre)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Apellido)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Apellido)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Telefono)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Telefono)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Correo)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Correo)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Estado)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Estado)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.SalarioBase)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.SalarioBase)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.FechaContraInicial)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.FechaContraInicial)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.FechaContraFinal)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.FechaContraFinal)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Usuario)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Usuario)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.Contraseña)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.Contraseña)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.JefeInmediato)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.JefeInmediato.Id)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.PuestoTrabajo)
+                </dt>
+                <dd class = "col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.PuestoTrabajo.NombrePuesto)
+                </dd>
+                <dt class = "col-sm-4 fw-bold text-end">
+                    @Html.DisplayNameFor(model => model.TipoDeHorario)
+                </dt>
+                <dd class="col-sm-6 fw-normal text-start">
+                    @Html.DisplayFor(model => model.TipoDeHorario.Id)
+                </dd>
+    </dl>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex justify-content-between mt-4">
+                    <input type="submit" value="Eliminar" class="btn btn-danger btn-sm" />
+                    <a asp-action="Index" class="btn btn-dark btn-sm">Volver</a>
+                </div>
+            </form>
+   </div>
+ </div>
+</div>
+
+   
